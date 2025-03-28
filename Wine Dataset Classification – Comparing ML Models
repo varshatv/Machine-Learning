@@ -1,0 +1,48 @@
+# Importing necessary libraries
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_wine
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+# Load the Wine dataset
+wine = load_wine()
+X = wine.data
+y = wine.target
+
+# Display basic information about the dataset
+print("Feature Names:", wine.feature_names)
+print("Target Classes:", wine.target_names)
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+
+# Initialize classifiers
+dt_model = DecisionTreeClassifier(random_state=42)
+rf_model = RandomForestClassifier(random_state=42)
+svc_model = SVC(random_state=42)
+
+# Train and Evaluate Decision Tree Classifier
+dt_model.fit(X_train, y_train)
+dt_predictions = dt_model.predict(X_test)
+dt_accuracy = accuracy_score(y_test, dt_predictions)
+print("Decision Tree Accuracy:", dt_accuracy)
+
+# Train and Evaluate Random Forest Classifier
+rf_model.fit(X_train, y_train)
+rf_predictions = rf_model.predict(X_test)
+rf_accuracy = accuracy_score(y_test, rf_predictions)
+print("Random Forest Accuracy:", rf_accuracy)
+
+# Train and Evaluate Support Vector Classifier
+svc_model.fit(X_train, y_train)
+svc_predictions = svc_model.predict(X_test)
+svc_accuracy = accuracy_score(y_test, svc_predictions)
+print("Support Vector Classifier Accuracy:", svc_accuracy)
+
+# Compare model performances
+best_model = max((dt_accuracy, 'Decision Tree'), (rf_accuracy, 'Random Forest'), (svc_accuracy, 'SVC'))
+print(f"Best Model: {best_model[1]} with Accuracy: {best_model[0]:.4f}")
